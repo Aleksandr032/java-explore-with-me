@@ -58,7 +58,6 @@ public class StatsClient {
         return responseBuilder.build();
     }
 
-
     private <T> ResponseEntity<Object> makeAndSendRequest(HttpMethod method, String path, @Nullable Map<String,
             Object> parameters, @Nullable T body) {
         HttpEntity<T> requestEntity = new HttpEntity<>(body, defaultHeaders());
