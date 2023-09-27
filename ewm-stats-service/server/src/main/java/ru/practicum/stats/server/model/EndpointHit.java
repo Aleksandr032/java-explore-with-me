@@ -15,7 +15,7 @@ import java.time.LocalDateTime;
 public class EndpointHit {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;                                      //для коммита
+    private Long id;
     @Column(nullable = false)
     private String app;
     @Column(nullable = false)
