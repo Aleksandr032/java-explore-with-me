@@ -9,7 +9,7 @@ public class EndpointHitMapper {
                 .app(endpointHitDto.getApp())
                 .uri(endpointHitDto.getUri())
                 .ip(endpointHitDto.getIp())
-                .endpoint_hit_timestamp(endpointHitDto.getDtoTimestamp())
+                .endpointHitTimestamp(endpointHitDto.getDtoTimestamp())
                 .build();
     }
 
@@ -18,7 +18,7 @@ public class EndpointHitMapper {
                 .app(endpointHit.getApp())
                 .uri(endpointHit.getUri())
                 .ip(endpointHit.getIp())
-                .dtoTimestamp(endpointHit.getEndpoint_hit_timestamp())
+                .dtoTimestamp(endpointHit.getEndpointHitTimestamp())
                 .build();
     }
 }
