@@ -12,7 +12,7 @@ public interface EndpointHitRepository extends JpaRepository<EndpointHit, Long> 
 
     @Query("SELECT new ru.practicum.stats.dto.ViewStatsDto(eh.app, eh.uri, COUNT(eh.ip) AS hits) " +
             "FROM EndpointHit eh " +
-            "WHERE eh.endpoint_hit_timestamp BETWEEN :start AND :end " +
+            "WHERE eh.endpointHitTimestamp BETWEEN :start AND :end " +
             "AND ((:uris) IS NULL OR eh.uri IN :uris) " +
             "GROUP BY eh.app, eh.uri " +
             "ORDER BY hits DESC")
@@ -20,7 +20,7 @@ public interface EndpointHitRepository extends JpaRepository<EndpointHit, Long> 
 
     @Query("SELECT new ru.practicum.stats.dto.ViewStatsDto(eh.app, eh.uri, COUNT(DISTINCT eh.ip) AS hits) " +
             "FROM EndpointHit eh " +
-            "WHERE eh.endpoint_hit_timestamp BETWEEN :start AND :end " +
+            "WHERE eh.endpointHitTimestamp BETWEEN :start AND :end " +
             "AND ((:uris) IS NULL OR eh.uri IN :uris) " +
             "GROUP BY eh.app, eh.uri " +
             "ORDER BY hits DESC")
