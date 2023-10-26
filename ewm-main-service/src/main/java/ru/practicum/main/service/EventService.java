@@ -1,6 +1,5 @@
 package ru.practicum.main.service;
 
-import ru.practicum.main.controller.PublicEventController;
 import ru.practicum.main.dto.*;
 import ru.practicum.main.model.State;
 
@@ -22,7 +21,7 @@ public interface EventService {
 
     List<EventShortDto> getAllForPublic(String text, List<Long> categories, Boolean paid, LocalDateTime rangeStart,
                                         LocalDateTime rangeEnd, boolean onlyAvailable,
-                                        PublicEventController.SortMode sort,
+                                        SortMode sort,
                                         int from, int size, HttpServletRequest request);
 
     EventFullDto getByIdForPublic(long eventId, HttpServletRequest request);

@@ -2,6 +2,7 @@ package ru.practicum.main.service.impl;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import ru.practicum.main.dto.ParticipationRequestDto;
 import ru.practicum.main.exception.model.DataConflictException;
 import ru.practicum.main.exception.model.NotFoundException;
@@ -18,6 +19,7 @@ import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
+@Transactional
 public class ParticipationRequestServiceImpl implements ParticipationRequestService {
     private final UserRepository userRepository;
     private final ParticipationRequestRepository requestRepository;
@@ -50,6 +52,7 @@ public class ParticipationRequestServiceImpl implements ParticipationRequestServ
     }
 
     @Override
+    @Transactional(readOnly = true)
     public List<ParticipationRequestDto> getAllRequests(Long userId) {
         checkUserById(userId);
         return requestRepository.findAllByRequesterId(userId).stream()

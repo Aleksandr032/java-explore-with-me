@@ -16,15 +16,16 @@ import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
+@Transactional
 public class CategoryServiceImpl implements CategoryService {
     private final CategoryRepository categoryRepository;
 
-    @Transactional
+    @Override
     public CategoryDto addCategory(CategoryDto categoryDto) {
         return CategoryMapper.toCategoryDto(categoryRepository.save(CategoryMapper.toCategory(categoryDto)));
     }
 
-    @Transactional
+    @Override
     public CategoryDto updateCategory(Long id, CategoryDto categoryDto) {
 
         categoryRepository.findById(id)
@@ -33,18 +34,22 @@ public class CategoryServiceImpl implements CategoryService {
         return CategoryMapper.toCategoryDto(categoryRepository.save(CategoryMapper.toCategory(categoryDto)));
     }
 
-    @Transactional
+    @Override
     public void deleteCategory(Long id) {
         categoryRepository.findById(id).orElseThrow(
                 () -> new NotFoundException("Категория с id: " + id + " не найдена"));
         categoryRepository.deleteById(id);
     }
 
+    @Override
+    @Transactional(readOnly = true)
     public CategoryDto getCategoryById(Long id) {
         return CategoryMapper.toCategoryDto(categoryRepository.findById(id).orElseThrow(
                 () -> new NotFoundException("Категория с id: " + id + " не найдена")));
     }
 
+    @Override
+    @Transactional(readOnly = true)
     public List<CategoryDto> getAllCategories(Integer from, Integer size) {
         Pageable pageable = PageRequest.of(from / size, size);
         return categoryRepository.findAll(pageable).stream()

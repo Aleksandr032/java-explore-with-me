@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import ru.practicum.main.dto.CompilationDto;
 import ru.practicum.main.dto.NewCompilationDto;
 import ru.practicum.main.dto.UpdateCompilationDto;
@@ -22,6 +23,7 @@ import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
+@Transactional
 public class CompilationServiceImpl implements CompilationService {
     private final CompilationRepository compilationRepository;
     private final EventRepository eventRepository;
@@ -49,12 +51,14 @@ public class CompilationServiceImpl implements CompilationService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public CompilationDto getById(Long id) {
         return CompilationMapper.toCompilationDto(compilationRepository.findById(id).orElseThrow(
                 () -> new NotFoundException("Подборка с id: " + id + " не найдена")));
     }
 
     @Override
+    @Transactional(readOnly = true)
     public List<CompilationDto> getAll(Boolean pinned, int from, int size) {
         Pageable pageable = PageRequest.of(from, size);
         return compilationRepository.getAllCompilation(pinned, pageable).stream()

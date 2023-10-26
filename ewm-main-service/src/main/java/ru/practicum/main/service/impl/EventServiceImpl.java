@@ -6,7 +6,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-import ru.practicum.main.controller.PublicEventController;
+import org.springframework.transaction.annotation.Transactional;
 import ru.practicum.main.dto.*;
 import ru.practicum.main.exception.model.DataConflictException;
 import ru.practicum.main.exception.model.NotFoundException;
@@ -31,6 +31,7 @@ import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
+@Transactional
 public class EventServiceImpl implements EventService {
     private final UserRepository userRepository;
     private final CategoryRepository categoryRepository;
@@ -73,6 +74,7 @@ public class EventServiceImpl implements EventService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public List<EventFullDto> getAllForAdmin(List<Long> users,
                                              List<State> states,
                                              List<Long> categories,
@@ -113,6 +115,7 @@ public class EventServiceImpl implements EventService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public List<EventShortDto> getAllForInitiator(long userId, int from, int size) {
         checkUserById(userId);
         Pageable page = PageRequest.of(from / size, size);
@@ -122,6 +125,7 @@ public class EventServiceImpl implements EventService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public EventFullDto getByIdForInitiator(long userId, long eventId) {
         checkUserById(userId);
         Event event = checkEventById(eventId);
@@ -226,6 +230,7 @@ public class EventServiceImpl implements EventService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public List<ParticipationRequestDto> getParticipationRequestsForInitiator(long userId, long eventId) {
         checkUserById(userId);
         checkEventById(eventId);
@@ -235,9 +240,10 @@ public class EventServiceImpl implements EventService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public List<EventShortDto> getAllForPublic(String text, List<Long> categories, Boolean paid,
                                                LocalDateTime rangeStart, LocalDateTime rangeEnd, boolean onlyAvailable,
-                                               PublicEventController.SortMode sort, int from, int size,
+                                               SortMode sort, int from, int size,
                                                HttpServletRequest request) {
         statsClient.createEndpointHit(EndpointHitDto.builder()
                 .app("ewm")
@@ -295,6 +301,7 @@ public class EventServiceImpl implements EventService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public EventFullDto getByIdForPublic(long eventId, HttpServletRequest request) {
         Event event = checkEventById(eventId);
         if (!event.getState().equals(State.PUBLISHED)) {

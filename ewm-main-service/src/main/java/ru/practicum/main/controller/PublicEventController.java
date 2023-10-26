@@ -6,6 +6,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import ru.practicum.main.dto.EventFullDto;
 import ru.practicum.main.dto.EventShortDto;
+import ru.practicum.main.dto.SortMode;
 import ru.practicum.main.exception.model.ValidationException;
 import ru.practicum.main.service.EventService;
 
@@ -44,10 +45,5 @@ public class PublicEventController {
     public EventFullDto getById(@PathVariable long eventId,
                                 HttpServletRequest request) {
         return eventService.getByIdForPublic(eventId, request);
-    }
-
-    public enum SortMode {
-        EVENT_DATE,
-        VIEWS
     }
 }
