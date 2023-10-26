@@ -1,12 +1,14 @@
 package ru.practicum.stats.server.service;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
-import ru.practicum.stats.dto.EndpointHitDto;
 import org.springframework.transaction.annotation.Transactional;
-import ru.practicum.stats.server.repository.EndpointHitRepository;
-import ru.practicum.stats.server.mapper.EndpointHitMapper;
+import org.springframework.web.server.ResponseStatusException;
+import ru.practicum.stats.dto.EndpointHitDto;
 import ru.practicum.stats.dto.ViewStatsDto;
+import ru.practicum.stats.server.mapper.EndpointHitMapper;
+import ru.practicum.stats.server.repository.EndpointHitRepository;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -26,6 +28,12 @@ public class StatsServiceImpl implements StatsService {
     @Override
     @Transactional(readOnly = true)
     public List<ViewStatsDto> getStats(LocalDateTime start, LocalDateTime end, List<String> uris, Boolean unique) {
+        if (end != null && start != null) {
+            if (!end.isAfter(start)) {
+                throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Неверная дата");
+            }
+        }
+
         List<ViewStatsDto> list;
         if (unique) {
             list = endpointHitRepository.getUniqueStats(start, end, uris);
